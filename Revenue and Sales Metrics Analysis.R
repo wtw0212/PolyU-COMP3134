@@ -1,3 +1,7 @@
+sapply(c("tidyverse", "arules", "arulesViz", "rpart", "rpart.plot", 
+         "ggplot2", "dplyr", "scales", "zoo"), 
+       function(x) if (!require(x, character.only = TRUE)) install.packages(x))
+
 library(tidyverse)
 library(arules)
 library(arulesViz)
@@ -10,9 +14,9 @@ library(zoo)
 
 Sys.setlocale("LC_TIME", "English")
 
-customers <- read.csv("COMP3134/customers_20.csv")
-products <- read.csv("COMP3134/products_20.csv")
-sales <- read.csv("COMP3134/sales_20.csv")
+customers <- read.csv("customers_20.csv")
+products <- read.csv("products_20.csv")
+sales <- read.csv("sales_20.csv")
 names(customers) <- gsub("[ .]", "_", names(customers))
 names(products) <- gsub("[ .]", "_", names(products))
 names(sales) <- gsub("[ .]", "_", names(sales))
