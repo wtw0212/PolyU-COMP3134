@@ -108,7 +108,7 @@ rules_category <- suppressMessages(apriori(trans_category,
                                              support = 0.01,
                                              confidence = 0.3,
                                              minlen = 2,
-                                             maxlen = 3
+                                             maxlen = 5
                                            )))
 
 rules_product <- suppressMessages(apriori(trans_product, 
@@ -116,7 +116,7 @@ rules_product <- suppressMessages(apriori(trans_product,
                                             support = 0.005,
                                             confidence = 0.3,
                                             minlen = 2,
-                                            maxlen = 3
+                                            maxlen = 5
                                           )))
 
 rules_category_sorted <- sort(rules_category, by = "confidence", decreasing = TRUE)
@@ -260,4 +260,14 @@ print(
       axis.text.y = element_text(size = 9)
     ) +
     ylim(0, max(top_10_for_viz$confidence) * 1.15)
+)
+
+# Network Graph Visualization (Category Level)
+print(
+  plot(head(rules_category_sorted, 15), 
+       method = "graph", 
+       engine = "ggplot2") + 
+    ggtitle("Network Graph: Top 15 Category Rules") +
+    theme_minimal() +
+    theme(plot.title = element_text(face = "bold", size = 14))
 )
