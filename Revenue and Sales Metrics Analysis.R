@@ -52,21 +52,23 @@ sales_by_category <- full_data %>%
   summarise(Total_Revenue = sum(Price)) %>%
   arrange(desc(Total_Revenue))
 
-ggplot(sales_by_category, aes(x = reorder(Category, -Total_Revenue), 
-                              y = Total_Revenue, fill = Category)) +
-  geom_col() +
-  scale_fill_manual(values = category_colors) +
-  scale_y_continuous(labels = comma) + 
-  labs(
-    title = "Total Revenue by Category",
-    x = "Category",
-    y = "Total Revenue"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "none"
-  )
+print(
+  ggplot(sales_by_category, aes(x = reorder(Category, -Total_Revenue), 
+                                y = Total_Revenue, fill = Category)) +
+    geom_col() +
+    scale_fill_manual(values = category_colors) +
+    scale_y_continuous(labels = comma) + 
+    labs(
+      title = "Total Revenue by Category",
+      x = "Category",
+      y = "Total Revenue"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = "none"
+    )
+)
 
 #Top 10 Products by Sales
 sales_by_product <- full_data %>%
@@ -83,22 +85,24 @@ top_10_products <- sales_by_product %>%
   head(10) %>%
   mutate(Product_Label = paste0(Product_id_list, " (", Category, ")"))
 
-ggplot(top_10_products, aes(x = reorder(Product_Label, -Total_Revenue), 
-                            y = Total_Revenue, fill = Category)) +
-  geom_col() +
-  scale_fill_manual(values = category_colors) +
-  scale_y_continuous(labels = comma) +
-  labs(
-    title = "Top 10 Products by Sales",
-    x = "Product (Category)",
-    y = "Total Revenue",
-    fill = "Category" 
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top" 
-  )
+print(
+  ggplot(top_10_products, aes(x = reorder(Product_Label, -Total_Revenue), 
+                              y = Total_Revenue, fill = Category)) +
+    geom_col() +
+    scale_fill_manual(values = category_colors) +
+    scale_y_continuous(labels = comma) +
+    labs(
+      title = "Top 10 Products by Sales",
+      x = "Product (Category)",
+      y = "Total Revenue",
+      fill = "Category" 
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = "top" 
+    )
+)
 
 #Sales by Shopping Mall
 sales_by_mall <- full_data %>%
@@ -106,17 +110,19 @@ sales_by_mall <- full_data %>%
   summarise(Total_Revenue = sum(Price)) %>%
   arrange(desc(Total_Revenue))
 
-ggplot(sales_by_mall, aes(x = reorder(Shopping_mall, -Total_Revenue), 
-                          y = Total_Revenue)) +
-  geom_col(fill = "coral") + 
-  scale_y_continuous(labels = comma) + 
-  labs(
-    title = "Total Revenue by Shopping Mall",
-    x = "Shopping Mall",
-    y = "Total Revenue"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+print(
+  ggplot(sales_by_mall, aes(x = reorder(Shopping_mall, -Total_Revenue), 
+                            y = Total_Revenue)) +
+    geom_col(fill = "coral") + 
+    scale_y_continuous(labels = comma) + 
+    labs(
+      title = "Total Revenue by Shopping Mall",
+      x = "Shopping Mall",
+      y = "Total Revenue"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+)
 
 #Detailed Mall Analysis
 mall_performance_summary <- full_data %>%
@@ -177,17 +183,19 @@ sales_trends <- full_data %>%
 sales_trends$Weekly_Avg_Revenue <- rollmean(sales_trends$Daily_Revenue, 
                                             k = 7, fill = NA, align = "right")
 
-ggplot(sales_trends, aes(x = Invoice_date)) +
-  geom_col(aes(y = Daily_Revenue), fill = "lightgrey", alpha = 0.7) +
-  geom_line(aes(y = Weekly_Avg_Revenue), color = "navy", linewidth = 1) +
-  scale_y_continuous(labels = comma) +
-  labs(
-    title = "Sales Trends with 7-Day Rolling Average",
-    subtitle = "Daily revenue shown in grey, with the smoothed weekly trend in blue.",
-    x = "Date",
-    y = "Revenue"
-  ) +
-  theme_minimal()
+print(
+  ggplot(sales_trends, aes(x = Invoice_date)) +
+    geom_col(aes(y = Daily_Revenue), fill = "lightgrey", alpha = 0.7) +
+    geom_line(aes(y = Weekly_Avg_Revenue), color = "navy", linewidth = 1) +
+    scale_y_continuous(labels = comma) +
+    labs(
+      title = "Sales Trends with 7-Day Rolling Average",
+      subtitle = "Daily revenue shown in grey, with the smoothed weekly trend in blue.",
+      x = "Date",
+      y = "Revenue"
+    ) +
+    theme_minimal()
+)
 
 #Sales by Payment Method
 sales_by_payment <- full_data %>%
@@ -195,17 +203,19 @@ sales_by_payment <- full_data %>%
   summarise(Total_Revenue = sum(Price)) %>%
   arrange(desc(Total_Revenue))
 
-ggplot(sales_by_payment, aes(x = reorder(Payment_method, -Total_Revenue), 
-                             y = Total_Revenue)) +
-  geom_col(fill = "coral") + 
-  scale_y_continuous(labels = comma) + 
-  labs(
-    title = "Total Revenue by Payment Method",
-    x = "Payment Method",
-    y = "Total Revenue"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+print(
+  ggplot(sales_by_payment, aes(x = reorder(Payment_method, -Total_Revenue), 
+                               y = Total_Revenue)) +
+    geom_col(fill = "coral") + 
+    scale_y_continuous(labels = comma) + 
+    labs(
+      title = "Total Revenue by Payment Method",
+      x = "Payment Method",
+      y = "Total Revenue"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+)
 
 #SEASONAL SALES ANALYSIS
 full_data <- full_data %>%
@@ -232,43 +242,47 @@ seasonal_sales_by_category <- full_data %>%
   arrange(Month_Num, Category)
 
 # Line Chart by Category
-ggplot(seasonal_sales_by_category, aes(x = Month, y = Total_Revenue, 
-                                       color = Category, group = Category)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 3) +
-  scale_color_manual(values = category_colors) +
-  scale_y_continuous(labels = comma) +
-  labs(
-    title = "Seasonal Sales Trends by Product Category",
-    subtitle = "Monthly revenue performance across different categories",
-    x = "Month",
-    y = "Total Revenue ($)",
-    color = "Category"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "right"
-  )
+print(
+  ggplot(seasonal_sales_by_category, aes(x = Month, y = Total_Revenue, 
+                                         color = Category, group = Category)) +
+    geom_line(linewidth = 1) +
+    geom_point(size = 3) +
+    scale_color_manual(values = category_colors) +
+    scale_y_continuous(labels = comma) +
+    labs(
+      title = "Seasonal Sales Trends by Product Category",
+      subtitle = "Monthly revenue performance across different categories",
+      x = "Month",
+      y = "Total Revenue ($)",
+      color = "Category"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = "right"
+    )
+)
 
 # Faceted Bar Chart
-ggplot(seasonal_sales_by_category, aes(x = Month, y = Total_Revenue, 
-                                       fill = Category)) +
-  geom_col(position = "dodge", show.legend = FALSE) +
-  scale_fill_manual(values = category_colors) +
-  scale_y_continuous(labels = comma) +
-  facet_wrap(~Category, scales = "free_y") +
-  labs(
-    title = "Monthly Revenue by Category",
-    subtitle = "Each category's y-axis is scaled independently",
-    x = "Month",
-    y = "Total Revenue ($)"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    strip.text = element_text(face = "bold", size = 12)
-  )
+print(
+  ggplot(seasonal_sales_by_category, aes(x = Month, y = Total_Revenue, 
+                                         fill = Category)) +
+    geom_col(position = "dodge", show.legend = FALSE) +
+    scale_fill_manual(values = category_colors) +
+    scale_y_continuous(labels = comma) +
+    facet_wrap(~Category, scales = "free_y") +
+    labs(
+      title = "Monthly Revenue by Category",
+      subtitle = "Each category's y-axis is scaled independently",
+      x = "Month",
+      y = "Total Revenue ($)"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text = element_text(face = "bold", size = 12)
+    )
+)
 
 # Seasonal Summary by Quarter/Season
 seasonal_summary <- full_data %>%
@@ -282,23 +296,25 @@ seasonal_summary <- full_data %>%
   arrange(factor(Season, levels = c("Winter", "Spring", "Summer", "Fall")), Category)
 
 # Seasonal Summary Heatmap
-ggplot(seasonal_summary, aes(x = Season, y = Category, fill = Total_Revenue)) +
-  geom_tile(color = "white", linewidth = 0.5) +
-  scale_fill_gradient(low = "lightblue", high = "darkblue", labels = comma) +
-  geom_text(aes(label = paste0("$", round(Total_Revenue/1000, 1), "K")), 
-            color = "white", size = 3, fontface = "bold") +
-  labs(
-    title = "Seasonal Sales Heatmap by Category",
-    subtitle = "Revenue distribution across seasons and product categories",
-    x = "Season",
-    y = "Category",
-    fill = "Total Revenue ($)"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    panel.grid = element_blank()
-  )
+print(
+  ggplot(seasonal_summary, aes(x = Season, y = Category, fill = Total_Revenue)) +
+    geom_tile(color = "white", linewidth = 0.5) +
+    scale_fill_gradient(low = "lightblue", high = "darkblue", labels = comma) +
+    geom_text(aes(label = paste0("$", round(Total_Revenue/1000, 1), "K")), 
+              color = "white", size = 3, fontface = "bold") +
+    labs(
+      title = "Seasonal Sales Heatmap by Category",
+      subtitle = "Revenue distribution across seasons and product categories",
+      x = "Season",
+      y = "Category",
+      fill = "Total Revenue ($)"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.grid = element_blank()
+    )
+)
 
 # --- 12. ANNUAL REVENUE ANALYSIS ---
 annual_category_revenue <- full_data %>%

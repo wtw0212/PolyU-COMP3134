@@ -9,6 +9,8 @@ library(ggrepel)
 library(scales)
 library(purrr)
 
+Sys.setlocale("LC_TIME", "English")
+
 customers <- read.csv("customers_20.csv")
 products <- read.csv("products_20.csv")
 sales <- read.csv("sales_20.csv")
@@ -234,4 +236,3 @@ print(
       axis.ticks.y = element_blank()
     )
 )
-
