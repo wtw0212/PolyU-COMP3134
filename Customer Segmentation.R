@@ -53,18 +53,17 @@ k_values <- 1:10
 wss_values <- map_dbl(k_values, wss)
 elbow_data <- data.frame(k = k_values, wss = wss_values)
 
-print(
-  ggplot(elbow_data, aes(x = k, y = wss)) +
-    geom_line(color = "navy", linewidth = 1) +
-    geom_point(color = "navy", size = 3) +
-    scale_x_continuous(breaks = k_values) +
-    labs(
-      title = "Elbow Method for Optimal 'k'",
-      x = "Number of Clusters (k)",
-      y = "Within-Cluster Sum of Squares"
-    ) +
-    theme_minimal()
-)
+p11 <- ggplot(elbow_data, aes(x = k, y = wss)) +
+  geom_line(color = "navy", linewidth = 1) +
+  geom_point(color = "navy", size = 3) +
+  scale_x_continuous(breaks = k_values) +
+  labs(
+    title = "Elbow Method for Optimal 'k'",
+    x = "Number of Clusters (k)",
+    y = "Within-Cluster Sum of Squares"
+  ) +
+  theme_minimal()
+print(p11)
 
 #K-Means Clustering
 set.seed(123)
@@ -125,58 +124,57 @@ set.seed(123)
 sample_percentage <- 0.4
 rfm_sample <- rfm_filtered %>% sample_frac(sample_percentage)
 
-print(
-  ggplot(rfm_filtered, aes(x = Monetary, y = Recency, color = Persona)) +
-    geom_hline(yintercept = avg_recency, linetype = "dashed", 
-               color = "grey40", alpha = 0.8, linewidth = 0.8) +
-    geom_vline(xintercept = avg_monetary, linetype = "dashed", 
-               color = "grey40", alpha = 0.8, linewidth = 0.8) +
-    
-    annotate("text", 
-             x = max(rfm_filtered$Monetary) * 0.85, 
-             y = avg_recency, 
-             label = paste0("Avg Recency: ", round(avg_recency, 0), " days"),
-             vjust = -0.5, 
-             color = "grey20", 
-             size = 3.5, 
-             fontface = "bold") +
-    
-    annotate("text", 
-             x = avg_monetary, 
-             y = max(rfm_filtered$Recency) * 0.95, 
-             label = paste0("Avg Spending: ", dollar(round(avg_monetary, 0))),
-             hjust = -0.1, 
-             color = "grey20", 
-             size = 3.5, 
-             fontface = "bold") +
-    
-    geom_point(data = rfm_sample, alpha = 0.7, size = 2.5) +
-    
-    # Add centroids
-    geom_point(data = centroids, shape = 23, fill = "white", 
-               color = "black", size = 7, stroke = 1.5) +
-    geom_text_repel(data = centroids, aes(label = Persona), 
-                    fontface = "bold", color = "black", 
-                    box.padding = 1.2, size = 4.5,
-                    min.segment.length = 0) +
-    
-    scale_color_manual(values = persona_colors) +
-    scale_x_continuous(labels = dollar_format()) +
-    labs(
-      title = "Actionable Customer Segments by RFM",
-      subtitle = paste0("Sample visualization (", sample_percentage * 100, 
-                        "% shown). White diamonds = average customer in each segment."),
-      x = "Total Customer Spending",
-      y = "Days Since Last Purchase",
-      color = "Customer Persona"
-    ) +
-    theme_minimal(base_size = 12) +
-    theme(
-      legend.position = "bottom",
-      plot.title = element_text(face = "bold", size = 16),
-      plot.subtitle = element_text(size = 9, color = "grey20")
-    )
-)
+p12 <- ggplot(rfm_filtered, aes(x = Monetary, y = Recency, color = Persona)) +
+  geom_hline(yintercept = avg_recency, linetype = "dashed", 
+             color = "grey40", alpha = 0.8, linewidth = 0.8) +
+  geom_vline(xintercept = avg_monetary, linetype = "dashed", 
+             color = "grey40", alpha = 0.8, linewidth = 0.8) +
+  
+  annotate("text", 
+           x = max(rfm_filtered$Monetary) * 0.85, 
+           y = avg_recency, 
+           label = paste0("Avg Recency: ", round(avg_recency, 0), " days"),
+           vjust = -0.5, 
+           color = "grey20", 
+           size = 3.5, 
+           fontface = "bold") +
+  
+  annotate("text", 
+           x = avg_monetary, 
+           y = max(rfm_filtered$Recency) * 0.95, 
+           label = paste0("Avg Spending: ", dollar(round(avg_monetary, 0))),
+           hjust = -0.1, 
+           color = "grey20", 
+           size = 3.5, 
+           fontface = "bold") +
+  
+  geom_point(data = rfm_sample, alpha = 0.7, size = 2.5) +
+  
+  # Add centroids
+  geom_point(data = centroids, shape = 23, fill = "white", 
+             color = "black", size = 7, stroke = 1.5) +
+  geom_text_repel(data = centroids, aes(label = Persona), 
+                  fontface = "bold", color = "black", 
+                  box.padding = 1.2, size = 4.5,
+                  min.segment.length = 0) +
+  
+  scale_color_manual(values = persona_colors) +
+  scale_x_continuous(labels = dollar_format()) +
+  labs(
+    title = "Actionable Customer Segments by RFM",
+    subtitle = paste0("Sample visualization (", sample_percentage * 100, 
+                      "% shown). White diamonds = average customer in each segment."),
+    x = "Total Customer Spending",
+    y = "Days Since Last Purchase",
+    color = "Customer Persona"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 9, color = "grey20")
+  )
+print(p12)
 
 removed_count <- nrow(rfm_summary) - nrow(rfm_filtered)
 removed_pct <- round(removed_count / nrow(rfm_summary) * 100, 1)
@@ -200,39 +198,61 @@ summary_long <- summary_stats %>%
     names_to = "Metric",
     values_to = "Value"
   ) %>%
-  mutate(Metric = recode(Metric,
-                         "Avg_Recency" = "Avg. Recency (Days)",
-                         "Avg_Frequency" = "Avg. Frequency (Purchases)",
-                         "Avg_Monetary" = "Avg. Spending ($)",
-                         "Customer_Count" = "Number of Customers")) %>%
+  mutate(Metric = dplyr::recode(Metric,
+                                "Avg_Recency" = "Avg. Recency (Days)",
+                                "Avg_Frequency" = "Avg. Frequency (Purchases)",
+                                "Avg_Monetary" = "Avg. Spending ($)",
+                                "Customer_Count" = "Number of Customers")) %>%
   mutate(Metric = factor(Metric, 
                          levels = c("Number of Customers", 
                                     "Avg. Spending ($)", 
                                     "Avg. Frequency (Purchases)", 
                                     "Avg. Recency (Days)")))
 
-print(
-  ggplot(summary_long, aes(x = Persona, y = Value, fill = Persona)) +
-    geom_col(show.legend = FALSE) +
-    geom_text(aes(label = round(Value, 1)), vjust = -0.4, 
-              size = 3.5, color = "black", fontface = "bold") +
-    facet_wrap(~Metric, scales = "free_y") +
-    scale_fill_manual(values = persona_colors) +
-    scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
-    labs(
-      title = "Profile Comparison of Customer Personas",
-      subtitle = "Key characteristics of each segment based on RFM analysis",
-      x = NULL,
-      y = NULL
-    ) +
-    theme_minimal(base_size = 12) +
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-      axis.text.y = element_blank(),
-      strip.text = element_text(face = "bold", size = 11),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      axis.line.y = element_blank(),
-      axis.ticks.y = element_blank()
-    )
+p13 <- ggplot(summary_long, aes(x = Persona, y = Value, fill = Persona)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = round(Value, 1)), vjust = -0.4, 
+            size = 3.5, color = "black", fontface = "bold") +
+  facet_wrap(~Metric, scales = "free_y") +
+  scale_fill_manual(values = persona_colors) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Profile Comparison of Customer Personas",
+    subtitle = "Key characteristics of each segment based on RFM analysis",
+    x = NULL,
+    y = NULL
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+    axis.text.y = element_blank(),
+    strip.text = element_text(face = "bold", size = 11),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
+print(p13)
+
+output_dir <- "graph"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+  message(paste("Created new directory:", output_dir))
+}
+
+plot_list <- list(
+  "11_Elbow_Method" = p11,
+  "12_RFM_Segments_Scatter" = p12,
+  "13_RFM_Profile_Comparison" = p13
 )
+
+cat("\nStarting export for RFM plots to 'graph' folder...\n")
+for (plot_name in names(plot_list)) {
+  file_path <- file.path(output_dir, paste0(plot_name, ".png"))
+  
+  ggsave(filename = file_path, plot = plot_list[[plot_name]], 
+         width = 10, height = 6, dpi = 300, bg = "white")
+  
+  cat(paste("Saved:", file_path, "\n"))
+}
+cat("Export complete!\n")

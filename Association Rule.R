@@ -59,23 +59,22 @@ top_product_df <- data.frame(
   left_join(products, by = c("Product_id" = "Product_id")) %>%
   mutate(Label = paste0(Product_id, "\n(", Category, ")"))
 
-print(
-  ggplot(top_product_df, aes(x = reorder(Label, -Frequency), 
-                             y = Frequency, fill = Category)) +
-    geom_col() +
-    scale_fill_manual(values = category_colors) +
-    labs(
-      title = "Top 20 Most Frequently Purchased Products",
-      x = "Product (Category)",
-      y = "Purchase Frequency"
-    ) +
-    theme_minimal() +
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
-      legend.position = "top",
-      plot.title = element_text(face = "bold", size = 14)
-    )
-)
+p14 <- ggplot(top_product_df, aes(x = reorder(Label, -Frequency), 
+                                  y = Frequency, fill = Category)) +
+  geom_col() +
+  scale_fill_manual(values = category_colors) +
+  labs(
+    title = "Top 20 Most Frequently Purchased Products",
+    x = "Product (Category)",
+    y = "Purchase Frequency"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+    legend.position = "top",
+    plot.title = element_text(face = "bold", size = 14)
+  )
+print(p14)
 
 #Category Frequency Plot
 item_freq_category <- itemFrequency(trans_category, type = "absolute")
@@ -84,23 +83,22 @@ category_freq_df <- data.frame(
   Frequency = as.numeric(item_freq_category)
 )
 
-print(
-  ggplot(category_freq_df, aes(x = reorder(Category, -Frequency), 
-                               y = Frequency, fill = Category)) +
-    geom_col(show.legend = FALSE) +
-    geom_text(aes(label = Frequency), vjust = -0.5, fontface = "bold") +
-    scale_fill_manual(values = category_colors) +
-    labs(
-      title = "Category Purchase Frequency",
-      x = "Product Category",
-      y = "Frequency in Transactions"
-    ) +
-    theme_minimal() +
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      plot.title = element_text(face = "bold", size = 14)
-    )
-)
+p15 <- ggplot(category_freq_df, aes(x = reorder(Category, -Frequency), 
+                                    y = Frequency, fill = Category)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = Frequency), vjust = -0.5, fontface = "bold") +
+  scale_fill_manual(values = category_colors) +
+  labs(
+    title = "Category Purchase Frequency",
+    x = "Product Category",
+    y = "Frequency in Transactions"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(face = "bold", size = 14)
+  )
+print(p15)
 
 #Association Rule Mining
 rules_category <- suppressMessages(apriori(trans_category, 
@@ -198,43 +196,41 @@ comparison_data <- data.frame(
   )
 )
 
-print(
-  ggplot(comparison_data, aes(x = Level, y = Significant_Rules, fill = Method)) +
-    geom_col(position = "dodge") +
-    geom_text(aes(label = Significant_Rules), 
-              position = position_dodge(width = 0.9), 
-              vjust = -0.5, fontface = "bold") +
-    scale_fill_manual(values = c("Chi-Squared" = "steelblue", 
-                                 "Fisher's Exact" = "darkorange")) +
-    labs(
-      title = "Statistical Significance Comparison",
-      subtitle = "Number of significant rules (p < 0.05)",
-      y = "Number of Significant Rules",
-      x = "Analysis Level"
-    ) +
-    theme_minimal() +
-    theme(plot.title = element_text(face = "bold", size = 14))
-)
+p16 <- ggplot(comparison_data, aes(x = Level, y = Significant_Rules, fill = Method)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = Significant_Rules), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, fontface = "bold") +
+  scale_fill_manual(values = c("Chi-Squared" = "steelblue", 
+                               "Fisher's Exact" = "darkorange")) +
+  labs(
+    title = "Statistical Significance Comparison",
+    subtitle = "Number of significant rules (p < 0.05)",
+    y = "Number of Significant Rules",
+    x = "Analysis Level"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold", size = 14))
+print(p16)
 
 #Confidence vs Lift Scatter Plot
-print(
-  ggplot(category_rules_hybrid %>% head(30), 
-         aes(x = confidence, y = lift, size = support, alpha = 0.7)) +
-    geom_point(color = "steelblue") +
-    geom_hline(yintercept = 1, linetype = "dashed", color = "red", alpha = 0.5) +
-    geom_vline(xintercept = 0.5, linetype = "dashed", color = "blue", alpha = 0.5) +
-    labs(
-      title = "Association Rules: Confidence vs Lift",
-      subtitle = "Top 30 category-level rules (sized by support)",
-      x = "Confidence",
-      y = "Lift",
-      size = "Support"
-    ) +
-    theme_minimal() +
-    theme(plot.title = element_text(face = "bold", size = 14),
-          legend.position = "right") +
-    guides(alpha = "none")
-)
+p17 <- ggplot(category_rules_hybrid %>% head(30), 
+              aes(x = confidence, y = lift, size = support, alpha = 0.7)) +
+  geom_point(color = "steelblue") +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "red", alpha = 0.5) +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "blue", alpha = 0.5) +
+  labs(
+    title = "Association Rules: Confidence vs Lift",
+    subtitle = "Top 30 category-level rules (sized by support)",
+    x = "Confidence",
+    y = "Lift",
+    size = "Support"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold", size = 14),
+        legend.position = "right") +
+  guides(alpha = "none")
+print(p17)
 
 #Top 10 Rules Bar Plot
 top_10_for_viz <- category_rules_hybrid %>%
@@ -244,30 +240,58 @@ top_10_for_viz <- category_rules_hybrid %>%
     rule_label = factor(rule_label, levels = rev(rule_label))
   )
 
-print(
-  ggplot(top_10_for_viz, aes(x = rule_label, y = confidence)) +
-    geom_col(fill = "steelblue") +
-    geom_text(aes(label = paste0(confidence)), hjust = -0.1, size = 3) +
-    coord_flip() +
-    labs(
-      title = "Top 10 Association Rules by Confidence",
-      x = "Rule",
-      y = "Confidence"
-    ) +
-    theme_minimal() +
-    theme(
-      plot.title = element_text(face = "bold", size = 14),
-      axis.text.y = element_text(size = 9)
-    ) +
-    ylim(0, max(top_10_for_viz$confidence) * 1.15)
-)
+p18 <- ggplot(top_10_for_viz, aes(x = rule_label, y = confidence)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = paste0(confidence)), hjust = -0.1, size = 3) +
+  coord_flip() +
+  labs(
+    title = "Top 10 Association Rules by Confidence",
+    x = "Rule",
+    y = "Confidence"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.text.y = element_text(size = 9)
+  ) +
+  ylim(0, max(top_10_for_viz$confidence) * 1.15)
+print(p18)
 
 # Network Graph Visualization (Category Level)
-print(
-  plot(head(rules_category_sorted, 15), 
-       method = "graph", 
-       engine = "ggplot2") + 
-    ggtitle("Network Graph: Top 15 Category Rules") +
-    theme_minimal() +
-    theme(plot.title = element_text(face = "bold", size = 14))
+p19 <- plot(head(rules_category_sorted, 15), 
+            method = "graph", 
+            engine = "ggplot2") + 
+  ggtitle("Network Graph: Top 15 Category Rules") +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold", size = 14))
+print(p19)
+
+# Create 'graph' folder if it doesn't exist
+output_dir <- "graph"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+  message(paste("Created new directory:", output_dir))
+}
+
+# List of all plots to export (Starting from p14)
+plot_list <- list(
+  "14_Top_20_Products" = p14,
+  "15_Category_Frequency" = p15,
+  "16_Significance_Comparison" = p16,
+  "17_Confidence_vs_Lift" = p17,
+  "18_Top_10_Rules_Confidence" = p18,
+  "19_Network_Graph_Category" = p19
 )
+
+# Loop through and save each plot
+cat("\nStarting export for Association Rules plots to 'graph' folder...\n")
+for (plot_name in names(plot_list)) {
+  file_path <- file.path(output_dir, paste0(plot_name, ".png"))
+  
+  # Save plot (bg="white" ensures transparent themes don't look weird)
+  ggsave(filename = file_path, plot = plot_list[[plot_name]], 
+         width = 10, height = 6, dpi = 300, bg = "white")
+  
+  cat(paste("Saved:", file_path, "\n"))
+}
+cat("Export complete!\n")
