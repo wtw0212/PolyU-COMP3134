@@ -166,35 +166,25 @@ product_rules_fisher <- data.frame(
     p_value = round(p_value, 4)
   )
 
-#Top 10 Association Rules Table
-top_10_category <- category_rules_hybrid %>%
-  head(10) %>%
-  mutate(rules = paste0("{", lhs, "} => {", rhs, "}")) %>%
-  select(rules, support, confidence, lift, count, chi2_pvalue)
+chi2_values_prod <- interestMeasure(rules_product_sorted,
+                                    measure = "chiSquared",
+                                    transactions = trans_product)
+chi2_pvalues_prod <- pchisq(chi2_values_prod, df = 1, lower.tail = FALSE)
 
-top_10_product <- product_rules_fisher %>%
-  head(10) %>%
-  mutate(rules = paste0("{", lhs, "} => {", rhs, "}")) %>%
-  select(rules, support, confidence, lift, count, p_value)
+product_rules_hybrid <- product_rules_fisher %>% 
+  mutate(chi2_pvalue = round(chi2_pvalues_prod, 4))
 
-cat("\n=== Top 10 Category-Level Association Rules ===\n\n")
-print(top_10_category)
-
-cat("\n\n=== Top 10 Product-Level Association Rules ===\n\n")
-print(top_10_product)
-
-#Visualization
-#Significance Comparison Plot
 comparison_data <- data.frame(
   Method = rep(c("Chi-Squared", "Fisher's Exact"), each = 2),
-  Level = rep(c("Category", "Product"), 2),
+  Level  = rep(c("Category", "Product"), 2),
   Significant_Rules = c(
     sum(category_rules_hybrid$chi2_pvalue < 0.05),
-    sum(product_rules_fisher$p_value < 0.05),
+    sum(product_rules_hybrid$chi2_pvalue   < 0.05),
     sum(category_rules_hybrid$fisher_pvalue < 0.05),
-    sum(product_rules_fisher$p_value < 0.05)
+    sum(product_rules_hybrid$p_value        < 0.05)
   )
 )
+
 
 p16 <- ggplot(comparison_data, aes(x = Level, y = Significant_Rules, fill = Method)) +
   geom_col(position = "dodge") +
@@ -268,8 +258,8 @@ print(p19)
 
 # Top 10 Association Rules by Lift（Category level）
 top_10_lift <- category_rules_hybrid %>%
-  arrange(desc(lift)) %>%          # 由大到細排 lift
-  head(10) %>%                     # 取前 10 條
+  arrange(desc(lift)) %>%
+  head(10) %>%
   mutate(
     rule_label = paste0(lhs, " => ", rhs),
     rule_label = factor(rule_label, levels = rev(rule_label))
@@ -295,18 +285,16 @@ p20 <- ggplot(top_10_lift, aes(x = rule_label, y = lift)) +
     plot.title = element_text(face = "bold", size = 14),
     axis.text.y = element_text(size = 9)
   ) +
-  ylim(0, max(top_10_lift$lift) * 1.15)   # 留一點空位放文字
+  ylim(0, max(top_10_lift$lift) * 1.15)
 
 print(p20)
 
-# Create 'graph' folder if it doesn't exist
 output_dir <- "graph"
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
   message(paste("Created new directory:", output_dir))
 }
 
-# List of all plots to export (Starting from p14)
 plot_list <- list(
   "14_Top_20_Products" = p14,
   "15_Category_Frequency" = p15,
