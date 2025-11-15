@@ -266,6 +266,39 @@ p19 <- plot(head(rules_category_sorted, 15),
   theme(plot.title = element_text(face = "bold", size = 14))
 print(p19)
 
+# Top 10 Association Rules by Lift（Category level）
+top_10_lift <- category_rules_hybrid %>%
+  arrange(desc(lift)) %>%          # 由大到細排 lift
+  head(10) %>%                     # 取前 10 條
+  mutate(
+    rule_label = paste0(lhs, " => ", rhs),
+    rule_label = factor(rule_label, levels = rev(rule_label))
+  )
+
+p20 <- ggplot(top_10_lift, aes(x = rule_label, y = lift)) +
+  geom_col(fill = "steelblue") +
+  geom_hline(yintercept = 1,
+             linetype = "dashed",
+             color = "red",
+             size = 0.8) +
+  geom_text(aes(label = lift),
+            hjust = -0.1,
+            size = 3) +
+  coord_flip() +
+  labs(
+    title = "Top 10 Association Rules by Lift",
+    x = "Rule",
+    y = "Lift"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.text.y = element_text(size = 9)
+  ) +
+  ylim(0, max(top_10_lift$lift) * 1.15)   # 留一點空位放文字
+
+print(p20)
+
 # Create 'graph' folder if it doesn't exist
 output_dir <- "graph"
 if (!dir.exists(output_dir)) {
@@ -280,15 +313,13 @@ plot_list <- list(
   "16_Significance_Comparison" = p16,
   "17_Confidence_vs_Lift" = p17,
   "18_Top_10_Rules_Confidence" = p18,
-  "19_Network_Graph_Category" = p19
+  "19_Network_Graph_Category" = p19,
+  "20_Top_10_Rules_Lift" = p20
 )
 
-# Loop through and save each plot
 cat("\nStarting export for Association Rules plots to 'graph' folder...\n")
 for (plot_name in names(plot_list)) {
   file_path <- file.path(output_dir, paste0(plot_name, ".png"))
-  
-  # Save plot (bg="white" ensures transparent themes don't look weird)
   ggsave(filename = file_path, plot = plot_list[[plot_name]], 
          width = 10, height = 6, dpi = 300, bg = "white")
   
