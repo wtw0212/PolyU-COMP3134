@@ -6,9 +6,12 @@ from pathlib import Path
 import os
 from datetime import datetime
 
-salesFile = "./sales_20.csv" #Define path to the sales data, product data and customer data
-productFile = "./products_20.csv"
-customerFile = "./customers_20.csv"
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+salesFile = os.path.join(script_dir, "sales_20.csv")
+productFile = os.path.join(script_dir, "products_20.csv")
+customerFile = os.path.join(script_dir, "customers_20.csv")
 
 salesData = pd.read_csv(
     salesFile,
@@ -74,6 +77,9 @@ customerSpendAge = customerData.merge(
 customerSpendAge["Total Spending"] = customerSpendAge["Total Spending"].fillna(0.0)
 
 def saveAsPng(fig, outDir="graph", base_name="figure", overwrite=True, dpi=300):
+    # Make outDir absolute relative to script location
+    if not os.path.isabs(outDir):
+        outDir = os.path.join(script_dir, outDir)
     os.makedirs(outDir, exist_ok=True)
     if overwrite:
         filename = f"{base_name}.png"

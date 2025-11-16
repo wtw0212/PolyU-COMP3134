@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import os
 
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 # File paths (adjust if needed)
-sales_fp = Path('sales_20.csv')
-products_fp = Path('products_20.csv')
-customers_fp = Path('customers_20.csv')
+sales_fp = Path(script_dir) / 'sales_20.csv'
+products_fp = Path(script_dir) / 'products_20.csv'
+customers_fp = Path(script_dir) / 'customers_20.csv'
 
 # 1) Load data
 sales = pd.read_csv(sales_fp)
@@ -77,8 +80,9 @@ for bar in bars:
     plt.text(bar.get_x() + bar.get_width()/2, height, f'{height:,.0f}', ha='center', va='bottom')
 
 # Save the figure to the 'graph' directory before showing
-os.makedirs('graph', exist_ok=True)
-save_path = Path('graph') / '23_Total_Spending_by_Gender.png'
+graph_dir = Path(script_dir) / 'graph'
+os.makedirs(graph_dir, exist_ok=True)
+save_path = graph_dir / '23_Total_Spending_by_Gender.png'
 plt.tight_layout()
 plt.savefig(save_path, dpi=300, bbox_inches='tight')
 print(f"Saved chart to: {save_path.resolve()}")

@@ -6,9 +6,12 @@ from pathlib import Path
 import os
 from datetime import datetime
 
-salesFile = "./sales_20.csv"
-productFile = "./products_20.csv"
-customerFile = "./customers_20.csv"
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+salesFile = os.path.join(script_dir, "sales_20.csv")
+productFile = os.path.join(script_dir, "products_20.csv")
+customerFile = os.path.join(script_dir, "customers_20.csv")
 
 salesData = pd.read_csv(
     salesFile,
@@ -47,6 +50,9 @@ def splitProducts(temp: pd.DataFrame) -> pd.DataFrame:
     return exploded
 
 def save_figure_png(fig, out_dir="graph", base_name="figure", overwrite=True, dpi=300):
+    # Make out_dir absolute relative to script location
+    if not os.path.isabs(out_dir):
+        out_dir = os.path.join(script_dir, out_dir)
     os.makedirs(out_dir, exist_ok=True)
     if overwrite:
         filename = f"{base_name}.png"
