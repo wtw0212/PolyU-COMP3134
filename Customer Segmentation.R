@@ -234,16 +234,46 @@ p13 <- ggplot(summary_long, aes(x = Persona, y = Value, fill = Persona)) +
   )
 print(p13)
 
-output_dir <- "graph"
-if (!dir.exists(output_dir)) {
-  dir.create(output_dir)
-  message(paste("Created new directory:", output_dir))
-}
+revenue_by_persona <- rfm_summary %>%
+  group_by(Persona) %>%
+  summarise(
+    Total_Revenue = sum(Monetary),
+    .groups = 'drop'
+  ) %>%
+  mutate(
+    Percentage = Total_Revenue / sum(Total_Revenue) * 100,
+    Label = paste0(Persona, "\n", dollar(round(Total_Revenue, 0)), 
+                   "\n(", round(Percentage, 1), "%)")
+  )
+
+p13_1 <- ggplot(revenue_by_persona, aes(x = "", y = Percentage, fill = Persona)) +
+  geom_col(width = 1, color = "white", linewidth = 1.2) +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = paste0(round(Percentage, 1), "%")),
+            position = position_stack(vjust = 0.5),
+            size = 5, fontface = "bold", color = "white") +
+  scale_fill_manual(values = persona_colors) +
+  labs(
+    title = "Revenue Distribution by Customer Persona",
+    subtitle = "Percentage of total revenue contributed by each customer segment",
+    fill = "Customer Persona"
+  ) +
+  theme_void(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.subtitle = element_text(size = 10, color = "grey20", hjust = 0.5),
+    legend.position = "right",
+    legend.title = element_text(face = "bold", size = 11),
+    legend.text = element_text(size = 10)
+  )
+
+print(p13_1)
 
 plot_list <- list(
   "11_Elbow_Method" = p11,
   "12_RFM_Segments_Scatter" = p12,
-  "13_RFM_Profile_Comparison" = p13
+  "13_RFM_Profile_Comparison" = p13,
+  "13_1_Revenue_Pie_Chart" = p13_1
 )
 
 cat("\nStarting export for RFM plots to 'graph' folder...\n")
