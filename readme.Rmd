@@ -2,17 +2,17 @@
 
 Comprehensive customer analytics and sales data mining project using Python and R for visualization, segmentation, and association rule mining.
 
-## 🔧 Prerequisites
+## Prerequisites
 
 ### Python
 - **Python 3.13** (recommended) or 3.11/3.12
-- ⚠️ **Python 3.14 not supported** due to NumPy compatibility
+- **Python 3.14 not supported** due to NumPy compatibility
 
 ### R
 - **R 4.0+** (required)
 - **RStudio** (optional, but recommended for interactive analysis)
 
-## 🚀 Setup
+## Setup
 
 ### Python Setup
 
@@ -38,7 +38,7 @@ R packages are **auto-installed** when you first run each script. No manual setu
 - **Segmentation:** dplyr, tidyr, ggplot2, ggrepel, scales, purrr
 - **Association Rules:** tidyverse, arules, arulesViz, ggplot2, scales, gridExtra
 
-## 💻 Usage
+## Usage
 
 ### Running Python Scripts
 
@@ -83,11 +83,11 @@ Rscript "Association Rule.R"
 Rscript "Revenue and Sales Metrics Analysis.R"; Rscript "Customer Segmentation.R"; Rscript "Association Rule.R"
 ```
 
-## 📊 Output
+## Output
 
 All visualizations are saved as PNG files (300 DPI) in the `graph/` directory.
 
-### 📊 R Scripts Output (01-19)
+### R Scripts Output (01-19)
 
 #### Revenue and Sales Metrics (01-10)
 | File | Description |
@@ -123,7 +123,7 @@ All visualizations are saved as PNG files (300 DPI) in the `graph/` directory.
 | `19_Network_Graph_Category.png` | Category relationship network visualization |
 
 
-### 📈 Python Scripts Output (20-23)
+### Python Scripts Output (20-23)
 
 | File | Description |
 |------|-------------|
@@ -132,7 +132,7 @@ All visualizations are saved as PNG files (300 DPI) in the `graph/` directory.
 | `22_Total_Spending_by_Gender.png` | Bar chart comparing total spending by gender |
 | `23_Customer_Total_Spending_vs_Shopping_Frequency.png` | Scatter plot with frequency-spending clusters |
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Python Issues
 
@@ -168,6 +168,6 @@ py -3.13 --version
 - Add R to your system PATH
 - Or use full path: `"C:\Program Files\R\R-4.x.x\bin\Rscript.exe"`
 
-## 📄 License
+## License
 
 Academic project for PolyU COMP3134 course.
