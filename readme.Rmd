@@ -1,0 +1,171 @@
+# PolyU COMP3134 - Data Analysis Project
+
+Comprehensive customer analytics and sales data mining project using Python and R for visualization, segmentation, and association rule mining.
+
+## 🔧 Prerequisites
+
+### Python
+- **Python 3.13** (recommended) or 3.11/3.12
+- ⚠️ **Python 3.14 not supported** due to NumPy compatibility
+
+### R
+- **R 4.0+** (required)
+- **RStudio** (optional, but recommended for interactive analysis)
+
+## 🚀 Setup
+
+### Python Setup
+
+Install required Python packages:
+
+```powershell
+py -3.13 -m pip install -r requirements.txt
+```
+
+**Packages installed:**
+- pandas 2.3.3
+- numpy 2.2.6
+- matplotlib 3.10.7
+- seaborn 0.13.2
+- scikit-learn 1.7.2
+
+### R Setup
+
+R packages are **auto-installed** when you first run each script. No manual setup required!
+
+**Packages used:**
+- **Revenue Analysis:** tidyverse, arules, arulesViz, rpart, rpart.plot, ggplot2, dplyr, scales, zoo
+- **Segmentation:** dplyr, tidyr, ggplot2, ggrepel, scales, purrr
+- **Association Rules:** tidyverse, arules, arulesViz, ggplot2, scales, gridExtra
+
+## 💻 Usage
+
+### Running Python Scripts
+
+Navigate to the project directory and run individual scripts:
+
+```powershell
+# Age-based spending analysis
+py -3.13 "Total Spending vs Age.py"
+
+# Gender-based spending analysis
+py -3.13 "Total Spending vs Gender.py"
+
+# Shopping frequency analysis
+py -3.13 "Total Spending vs Shopping Frequency.py"
+```
+
+**Quick run all Python scripts:**
+```powershell
+py -3.13 "Total Spending vs Age.py"; py -3.13 "Total Spending vs Gender.py"; py -3.13 "Total Spending vs Shopping Frequency.py"
+```
+
+### Running R Scripts
+
+#### Option 1: RStudio (Recommended)
+1. Open the R script in RStudio
+2. Click **Source** or press `Ctrl+Shift+S`
+
+#### Option 2: Command Line
+```powershell
+# Revenue and sales metrics (plots 01-10)
+Rscript "Revenue and Sales Metrics Analysis.R"
+
+# Customer segmentation (plots 11-13)
+Rscript "Customer Segmentation.R"
+
+# Association rules (plots 14-19)
+Rscript "Association Rule.R"
+```
+
+**Quick run all R scripts:**
+```powershell
+Rscript "Revenue and Sales Metrics Analysis.R"; Rscript "Customer Segmentation.R"; Rscript "Association Rule.R"
+```
+
+## 📊 Output
+
+All visualizations are saved as PNG files (300 DPI) in the `graph/` directory.
+
+### 📊 R Scripts Output (01-19)
+
+#### Revenue and Sales Metrics (01-10)
+| File | Description |
+|------|-------------|
+| `01_Total_Revenue_by_Category.png` | Revenue breakdown by product category |
+| `02_Top_10_Products.png` | Best-selling products with categories |
+| `03_Revenue_by_Mall.png` | Shopping mall performance comparison |
+| `04_Category_Sales_by_Mall.png` | Category performance per mall |
+| `05_Sales_Trends_Rolling_Avg.png` | Daily sales with 7-day moving average |
+| `06_Revenue_by_Payment.png` | Payment method distribution |
+| `07_Seasonal_Trends_Line.png` | Monthly category performance trends |
+| `08_Seasonal_Revenue_Bar.png` | Monthly revenue by category |
+| `09_Seasonal_Heatmap.png` | Seasonal sales heatmap |
+| `10_Annual_Revenue_Breakdown.png` | Yearly revenue with category details |
+
+#### Customer Segmentation (11-13)
+| File | Description |
+|------|-------------|
+| `11_Elbow_Method.png` | K-means optimal cluster selection |
+| `12_RFM_Segments_Scatter.png` | Customer segments by Recency, Frequency, Monetary value |
+| `13_RFM_Profile_Comparison.png` | Detailed segment profile comparison |
+
+#### Association Rules (14-19)
+| File | Description |
+|------|-------------|
+| `14_Top_20_Products.png` | Most frequently purchased products |
+| `15_Category_Frequency.png` | Category purchase frequency analysis |
+| `16_Significance_Comparison.png` | Chi-squared vs Fisher's exact test comparison |
+| `17_Confidence_vs_Lift.png` | Association rule quality metrics scatter |
+| `18_Top_10_Rules_Confidence.png` | Top 10 association rules by confidence |
+| `19_Network_Graph_Category.png` | Category relationship network visualization |
+
+
+### 📈 Python Scripts Output (20-23)
+
+| File | Description |
+|------|-------------|
+| `20_Customer_Total_Spending_vs_Age.png` | Scatter plot with customer segments by age and spending |
+| `21_Total_Spending_Distribution_by_Age_Group.png` | Box plot of spending distribution across age groups |
+| `22_Total_Spending_by_Gender.png` | Bar chart comparing total spending by gender |
+| `23_Customer_Total_Spending_vs_Shopping_Frequency.png` | Scatter plot with frequency-spending clusters |
+
+## 🔧 Troubleshooting
+
+### Python Issues
+
+**ModuleNotFoundError**
+```powershell
+# Solution: Install dependencies
+py -3.13 -m pip install -r requirements.txt
+```
+
+**Python Version Issues**
+```powershell
+# Check your version
+py -3.13 --version
+
+# Should be Python 3.11, 3.12, or 3.13 (NOT 3.14)
+```
+
+**FileNotFoundError**
+- Ensure all CSV files (`sales_20.csv`, `products_20.csv`, `customers_20.csv`) are in the project directory
+- Scripts use absolute paths and should work from any directory
+
+### R Issues
+
+**Package Installation Fails**
+- Run RStudio as administrator
+- Or manually install packages: `install.packages(c("tidyverse", "arules", "arulesViz"))`
+
+**Script Crashes or Freezes**
+- Ensure you have enough RAM (recommend 4GB+)
+- Close other applications and retry
+
+**Rscript Not Found**
+- Add R to your system PATH
+- Or use full path: `"C:\Program Files\R\R-4.x.x\bin\Rscript.exe"`
+
+## 📄 License
+
+Academic project for PolyU COMP3134 course.
