@@ -109,6 +109,8 @@ All visualizations are saved as PNG files (300 DPI) in the `graph/` directory.
 | `11_Elbow_Method.png` | K-means optimal cluster selection |
 | `12_RFM_Segments_Scatter.png` | Customer segments by Recency, Frequency, Monetary value |
 | `13_RFM_Profile_Comparison.png` | Detailed segment profile comparison |
+| `13_1_Revenue_Pie_Chart.png` | Percentage of total revenue contributed by each customer segment |
+
 
 #### Association Rules (14-19)
 | File | Description |
